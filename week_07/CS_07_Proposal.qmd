@@ -1,0 +1,41 @@
+---
+title: "Project Proposal"
+author: "Enoch"
+output:
+  github_document
+    toc: true
+    number-section: true
+date: 10/24/24
+---
+#Title
+Intersectional climate justice perspective, The case of extreme heat in Erie County, NY.
+
+#Abstract
+Climate extremes, including heatwaves, are manifestations of ongoing climate change and remain an enduring challenge for global communities. From an intersectional climate justice perspective, the distribution and impact of urban greenery raises equity concerns, particularly for vulnerable social groups. Heatwaves have significant consequences, including health complications and reduced energy efficiency, which disproportionately affect these groups. This study investigates the spatial relationship between surface temperature (used as a proxy for heat risk), urban greenery, and socially vulnerable groups—specifically racial minorities, low-income households, the elderly (65 and older), and children under five—at the census tract level in Erie County, New York. Using spatial regression models, the study finds that racial minorities, low-income residents, and elderly individuals are statistically significantly associated with higher heat risk. The study concludes that disparities and inequities are evident in areas predominantly occupied by socially vulnerable groups, as they are more exposed to heat risks, underscoring patterns of climate and environmental injustice.
+
+#Introduction
+Climate extremes, including heatwaves, are manifestations of ongoing climate change and remain a persistent global challenge. As these changes continue, extreme heat events are expected to intensify and become more frequent, particularly in urban areas. The rise in global temperatures above pre-industrial levels, coupled with rapid urbanization—projected to exceed 70% by 2050 (UN DESA, 2018)—has led to increased greenhouse gas emissions, exacerbating the Urban Heat Effect (UHE) (Jung et al., 2024). This phenomenon has made summers increasingly difficult, especially in parts of the United States (US), with profound socio-ecological impacts and disruptions. 
+The escalation of extreme heat has created significant environmental and social challenges, raising critical concerns related to environmental and climate justice (Mitchell and Chakraborty, 2014). Heatwaves not only contribute to health complications—such as respiratory and cardiovascular issues—but also degrade urban environmental quality, diminishing residents' overall quality of life (Li et al., 2019). These changes are further evidenced by increased electricity consumption during the summer months, as residents rely on air conditioning to mitigate heat risks. However, this reliance creates additional challenges, including disparities in access to cooling systems for vulnerable groups and a 19% rise in energy consumption, leading to higher electricity costs for residents (Li et al., 2019). 
+Urban areas with limited urban green infrastructure (UGI) are particularly susceptible to heat risks, as the absence of green spaces correlates with poor air quality and reduced cooling effects (Chen, 2024; Wilby, 2008). While much research has focused on the Urban Heat Island (UHI) effect, often through a climate or environmental justice lens, fewer studies explore the intersectional dimensions of climate justice. Such an intersectional approach integrates factors like surface temperature, socio-demographic characteristics, and the presence of UGI to better understand how vulnerability to heat risk varies across different communities. This perspective is particularly relevant given the history of systemic discrimination in US cities, where practices like redlining have reduced green infrastructure in minority neighborhoods and intensified racial segregation. In this context, the study addresses the following research questions: 
+i)	What are the spatial patterns of heat risk in Erie County, New York? 
+ii)	How do socio-demographic, economic, and spatial factors intersect to shape the vulnerability of different groups? 
+iii)	What spatial patterns emerge from the interplay of these intersecting factors?
+
+#Methods
+
+Data Acquisition
+The study intends to use multiple data sources to examine the socioeconomic features of census tracts including the cloud-free 30-m-resolution Landsat 8 satellite from the United States Geological Survey (USGS) (), surface temperature (APPEARS), and 5-year estimate American Community Survey (ACS) provided by the US Census Bureau (https://www.census.gov/) or Tidy census (install.packages ("tidycensus"). 
+
+Methods and Analysis
+The study employs spatial regression analysis to investigate the relationship between heat risk—measured by land surface temperature—and the presence of racial minorities, low-income residents, and elderly populations. Additionally, the study identifies variations in spatial pattern variables among these vulnerable groups, categorizing them as low, medium, or high risk. Census tracts with a z-score greater than 1 are classified as “high risk,” those with a z-score lower than -1 are classified as “low risk,” while the remaining tracts are designated as “medium risk.” Subsequently, the study utilizes analysis of variance (ANOVA) to assess the significance of spatial pattern variations among these groups and examines how these disparities contribute to heat inequity.
+
+#Expected Results
+
+#Reference
+Mitchell, B. C., & Chakraborty, J. (2014). Urban heat and climate justice: a landscape of thermal inequity in Pinellas County, Florida. Geographical Review, 104(4), 459-480. 
+United Nations Department of Economic and Social Affairs (UNDESA) (2018). World Urbanization Prospects—Population Division: The 2018 Revision.
+Li, X., Zhou, Y., Yu, S., Jia, G., Li, H., & Li, W. (2019). Urban heat island impacts on building energy consumption: A review of approaches and findings. Energy, 174, 407-419.
+Wilby, R. L. (2008). Constructing climate change scenarios of urban heat island intensity and air quality. Environment and Planning B: Planning and Design, 35(5), 902-919.
+Jung, M. W., Haddad, M. A., & Gelder, B. K. (2024). Examining heat inequity in a Brazilian metropolitan region. Environment and Planning B: Urban Analytics and City Science, 51(1), 109-127.
+Chen, P. (2024). Inequality in heat: The role of spatial patterns of urban green infrastructure. Urban Climate, 53, 101820.
+
