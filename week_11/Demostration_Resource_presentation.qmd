@@ -1,0 +1,38 @@
+---
+title: "Resource presentation"
+author: "Enoch"
+format: revealjs
+editor: visual
+---
+
+#install.packages("gganimate")
+
+```{r}
+library(gganimate)
+library(gapminder)
+```
+#Example 1
+
+```{r}
+#static plot 1
+ggplot(gapminder, aes(x = gdpPercap, y = lifeExp, size = pop, color = continent)) + geom_point(alpha = 0.7, show.legend = FALSE) + scale_x_log10() + theme_bw() + labs(title = 'Year: {frame_time}', x = "GDP per capita", y = "Life expectancy") + theme(plot.title = element_text(size = 20, hjust = 0.5, color = "steelblue")) +
+#gganimate code
+transition_time(year)
+```
+
+#Example 2
+
+```{r}
+#static plot 2
+ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+  geom_point(alpha = 0.7, show.legend = FALSE) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  # Here comes the gganimate specific bits
+  labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
+#gganimate code 
+  transition_time(year)
+```
+
