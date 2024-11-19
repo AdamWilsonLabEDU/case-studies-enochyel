@@ -1,0 +1,73 @@
+---
+title: "Case study 12"
+author: "Enoch"
+format: 
+html
+editor: visual
+---
+#install packages 
+```{r}
+install.packages("widgetframe")
+install.packages("xts")
+install.packages("htmlwidgets")
+install.packages("dygraphs")
+install.packages("openmeteo")
+```
+#Load packages 
+```{r}
+library(tidyverse)
+library(htmlwidgets)
+library(widgetframe)
+library(xts)
+library(dygraphs)
+library(openmeteo)
+```
+
+#Download and load data
+```{r}
+d<- weather_history(c(43.00923265935055, -78.78494250958327),start = "2023-01-01",end=today(),
+                  daily=list("temperature_2m_max","temperature_2m_min","precipitation_sum")) %>% 
+  mutate(daily_temperature_2m_mean=(daily_temperature_2m_max+daily_temperature_2m_min)/2)
+```
+
+#Convert dataframe of xts into time series object xts()
+```{r}
+d_xts <- xts(d %>% select(daily_temperature_2m_max, daily_temperature_2m_min, daily_temperature_2m_mean, daily_precipitation_sum),
+             order.by = as.Date(d$date))
+```
+
+#Plot daily maximum temperature
+```{r}
+# Create the dygraph with temperature data 
+t_dygraph <- dygraph(d_xts[, c("daily_temperature_2m_max")], main = "Daily Maximum Temperature in Buffalo, NY") %>% 
+  dySeries("daily_temperature_2m_max", label = "Max Temp") %>% 
+  dyRangeSelector(dateWindow = c("2023-01-01", "2024-10-31"))
+t_dygraph
+```
+
+#Plot daily precipation in Buffalo, NY
+```{r}
+prep_xts <- xts(d %>% select(daily_precipitation_sum),
+             order.by = as.Date(d$date))
+# Create a separate dygraph for precipitation data
+prep_dygraph<-dygraph(prep_xts, main = "Daily Precipitation in Buffalo, NY") %>%
+  dySeries("daily_precipitation_sum", label = "Precipitation (mm)") %>%
+  dyRangeSelector(dateWindow = c("2023-01-01", "2024-10-31"))
+prep_dygraph
+```
+#Combine the two plots (d_dygraph and prep_dygraph)
+```{r}
+com_xts<- xts(d %>% select(daily_temperature_2m_max,
+                       daily_precipitation_sum),
+             order.by = as.Date(d$date))
+# Combined dygraph with linked panning and zooming
+com_dygraph <- dygraph(com_xts, main = "Daily Weather Data in Buffalo, NY") %>% 
+  dySeries("daily_temperature_2m_max", label = "Max Temp", axis = "y") %>% 
+  dySeries("daily_precipitation_sum", label = "Precipitation", axis = "y2") %>% 
+  dyAxis("y2", label = "Precipitation (mm)") %>%
+  dyRangeSelector(dateWindow = c("2023-01-01", "2024-10-31")) 
+# Display the combined dygraph 
+com_dygraph
+```
+
+
