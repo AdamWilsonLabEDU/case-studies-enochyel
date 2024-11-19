@@ -1,0 +1,68 @@
+---
+title: "Time series for Mauna Loa CO2 levels"
+author: "Enoch"
+format: 
+  html: 
+    code-fold: true
+  pdf: default
+  docx: default
+  # pptx: default
+  # docx: default
+  #gfm: default
+editor: visual
+---
+```{r}
+# Load libraries
+library(readr)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(quarto)
+```
+2. **Read the data from the website:**
+```{r}
+# Read the data from the website
+url <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_annmean_mlo.txt"
+data_CO2 <- readr::read_table(url, skip = 45, col_names = c("year", "meanCO2", "unc"))
+```
+
+
+3. **Generate the time series plot of CO2 levels through time:**
+```{r}
+# Generate time series plot of CO2 levels through time
+CO2_levels <- ggplot(data = data_CO2, aes(x = year, y = meanCO2)) +
+  geom_point() +
+  geom_line(color = "blue") +
+  labs(title = "Time series for Mauna Loa CO2 levels",
+       x = "years",
+       y = "meanCO2 (ppm)") +
+  theme_minimal()
+
+# Save the plot as an image
+#ggsave("CO2_levels.png", plot = CO2_levels)
+CO2_levels
+```
+
+
+4. **Create the formatted table:**
+```{r, message=FALSE,eval=F}
+# Add additional table below the graph
+dataCO2_table <- data_CO2 %>%
+  kable() %>%
+  kable_styling(full_width = FALSE, position = "center", font_size = 12)
+dataCO2_table
+```
+
+5. **Render the document or output to YAML and embed the table as an image:**
+```{r, eval=F}
+# Render the document
+quarto::quarto_render("/Users/apple/Desktop/Respo/CS_08 Trend analysis of CO2.qmd", output_format = "all")
+# Save the table as an image
+data_CO2 %>%
+  kable() %>%
+  as_image(width = 10, file = "table.png")
+```
+
+
+
+

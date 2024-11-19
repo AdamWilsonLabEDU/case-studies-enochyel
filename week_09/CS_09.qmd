@@ -1,0 +1,90 @@
+---
+title: "CS_09"
+author: "Enoch"
+format: 
+  html: default
+  pdf: default
+  docx: default
+editor: visual
+date: 10/29/2024
+---
+
+```{r}
+
+#Load libraries
+library(sf)
+library(tidyverse)
+library(ggmap)
+library(spData)
+library(knitr)
+library(kableExtra)
+library(lubridate)
+```
+
+```{r}
+#Load data
+data(world)
+data(us_states)
+```
+
+```{r}
+#Download data
+dataurl="https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.NA.list.v04r01.csv"
+storm_data <- read_csv(dataurl)
+```
+
+```{r}
+# Wrangle data 
+storm_data <- storm_data %>% 
+mutate(year = year(ISO_TIME)) %>% 
+filter(year >= 1950) %>% 
+mutate_if(is.numeric, ~ ifelse(. == -999.0, NA, .)) %>% mutate(decade = floor(year / 10) * 10) %>% 
+st_as_sf(coords = c("LON", "LAT"), crs = 4326)
+region <- st_bbox(storm_data)
+```
+
+```{r}
+ggplot()+
+  geom_sf(data=world, fill = "white", color = "black")+
+  facet_wrap(~decade)+
+  stat_bin2d(data = storm_data, aes(y = st_coordinates(storm_data)[, 2], x = st_coordinates(storm_data)[, 1]), bins = 100)+
+  scale_fill_distiller(palette="YlOrRd", trans="log", direction=-1, breaks = c(1,10,100,1000))+
+  coord_sf(ylim=region[c(2,4)], xlim=region[c(1,3)])+ 
+  labs(title = "Storms by Decade")
+```
+
+```{r}
+#Create table of five states with most storms
+us_states <- st_transform(us_states, crs = st_crs(storm_data))
+#Rename column
+us_states2 <- us_states %>%
+  select(state = NAME)
+#spatial join between the storm database and the states object 
+storm_states <- st_join(storm_data, us_states2, join = st_intersects, left = FALSE)
+#group_by(state) to group the next step by US state
+top_states <- storm_states %>% 
+  group_by(state) %>% 
+  summarize(storms = length(unique(NAME))) %>% arrange(desc(storms)) %>% 
+  slice(1:5)
+```
+
+
+             
+             
+             
+  scale_fill_distiller(palette="YlOrRd", trans="log", direction=-1, breaks = c(1,10,100,1000))+
+  coord_sf(ylim=region[c(2,4)], xlim=region[c(1,3)])+ 
+  labs(title = "Storms by Decade")
+```
+
+```{r}
+State_year_storms <- top_states <- storm_states %>% 
+  group_by(state, year) %>% 
+  summarize(storms = length(unique(NAME)))
+```
+
+```{r}
+ggplot()+
+  geom_tile(data = storm_states, aes(y = state, x = year))
+```
+
